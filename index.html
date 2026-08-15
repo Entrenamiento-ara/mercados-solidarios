@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mercados Solidarios</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    line-height: 0;
+}
+
+.pieza {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+/* =========================
+   ZONA DEL REPRODUCTOR
+========================= */
+
+.audio-layer {
+
+    position: absolute;
+
+    left: 10.8%;
+    top: 56.2%;
+
+    width: 78.5%;
+    height: 9.8%;
+}
+
+
+/* =========================
+   BOTÓN PLAY
+========================= */
+
+.play {
+
+    position: absolute;
+
+    left: 2.8%;
+    top: 5%;
+
+    width: 13%;
+    height: 90%;
+
+    border: none;
+
+    background: transparent;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    padding: 0;
+}
+
+
+/* =========================
+   BARRA INTERACTIVA
+========================= */
+
+.progress {
+
+    position: absolute;
+
+    left: 18.2%;
+    top: 38%;
+
+    width: 63.5%;
+    height: 45%;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    padding: 0;
+}
+
+
+/* Barra base */
+
+.track {
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 50%;
+
+    height: 8px;
+
+    transform: translateY(-50%);
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,0.35);
+
+    pointer-events: none;
+}
+
+
+/* Barra verde que avanza */
+
+.fill {
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 0%;
+
+    height: 8px;
+
+    transform: translateY(-50%);
+
+    border-radius: 10px;
+
+    background: #66A61E;
+
+    pointer-events: none;
+}
+
+
+/* Punto */
+
+.dot {
+
+    position: absolute;
+
+    left: 0%;
+
+    top: 50%;
+
+    width: 13px;
+    height: 13px;
+
+    transform: translate(-50%,-50%);
+
+    border-radius: 50%;
+
+    background: #66A61E;
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   TIEMPO
+========================= */
+
+.time {
+
+    position: absolute;
+
+    left: 83%;
+    top: 28%;
+
+    color: #666666;
+
+    font-size: 12px;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 600px) {
+
+    .time {
+        font-size: 10px;
+    }
+
+    .track,
+    .fill {
+        height: 6px;
+    }
+
+    .dot {
+        width: 11px;
+        height: 11px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+    <!-- PIEZA -->
+
+    <img
+        class="pieza"
+        src="Final_mercados.png"
+        alt="Mercados Solidarios"
+    >
+
+
+    <!-- CONTROLES SOBRE LA PIEZA -->
+
+    <div class="audio-layer">
+
+
+        <!-- BOTÓN PLAY -->
+
+        <button
+            class="play"
+            id="play"
+            aria-label="Reproducir o pausar el audio">
+        </button>
+
+
+        <!-- BARRA -->
+
+        <button
+            class="progress"
+            id="progress"
+            aria-label="Avanzar o retroceder el audio">
+
+            <span class="track"></span>
+
+            <span
+                class="fill"
+                id="fill">
+            </span>
+
+            <span
+                class="dot"
+                id="dot">
+            </span>
+
+        </button>
+
+
+        <!-- TIEMPO -->
+
+        <div
+            class="time"
+            id="time">
+
+            00:00 / 02:24
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- AUDIO -->
+
+<audio
+    id="audio"
+    preload="metadata">
+
+    <source
+        src="Mercados_Solidarios.mp3"
+        type="audio/mpeg">
+
+</audio>
+
+
+
+<script>
+
+
+/* =========================
+   ELEMENTOS
+========================= */
+
+const audio =
+    document.getElementById("audio");
+
+const play =
+    document.getElementById("play");
+
+const progress =
+    document.getElementById("progress");
+
+const fill =
+    document.getElementById("fill");
+
+const dot =
+    document.getElementById("dot");
+
+const time =
+    document.getElementById("time");
+
+
+/* =========================
+   FORMATO DEL TIEMPO
+========================= */
+
+function formatTime(seconds) {
+
+    if (!Number.isFinite(seconds)) {
+
+        return "00:00";
+
+    }
+
+
+    seconds =
+        Math.max(
+            0,
+            Math.floor(seconds)
+        );
+
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+
+    const secondsPart =
+        seconds % 60;
+
+
+    return (
+
+        String(minutes)
+            .padStart(2, "0")
+
+        +
+
+        ":"
+
+        +
+
+        String(secondsPart)
+            .padStart(2, "0")
+
+    );
+
+}
+
+
+/* =========================
+   ACTUALIZAR BARRA
+========================= */
+
+function updatePlayer() {
+
+
+    const duration =
+        audio.duration;
+
+
+    const current =
+        audio.currentTime || 0;
+
+
+    /* Si todavía no conocemos
+       la duración */
+
+    if (
+        !Number.isFinite(duration)
+        ||
+        duration <= 0
+    ) {
+
+        time.textContent =
+            formatTime(current)
+            +
+            " / 02:24";
+
+        return;
+
+    }
+
+
+    /* Porcentaje */
+
+    let percentage =
+        (current / duration) * 100;
+
+
+    percentage =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                percentage
+            )
+        );
+
+
+    /* Barra verde */
+
+    fill.style.width =
+        percentage + "%";
+
+
+    /* Punto */
+
+    dot.style.left =
+        percentage + "%";
+
+
+    /* Tiempo */
+
+    time.textContent =
+
+        formatTime(current)
+
+        +
+
+        " / "
+
+        +
+
+        formatTime(duration);
+
+}
+
+
+/* =========================
+   PLAY / PAUSA
+========================= */
+
+play.addEventListener(
+    "click",
+    function(event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        if (audio.paused) {
+
+            audio.play().catch(
+                function(error) {
+
+                    console.log(
+                        "Error al reproducir:",
+                        error
+                    );
+
+                }
+            );
+
+        }
+
+        else {
+
+            audio.pause();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   ACTUALIZACIÓN DEL AUDIO
+========================= */
+
+audio.addEventListener(
+    "timeupdate",
+    updatePlayer
+);
+
+
+audio.addEventListener(
+    "loadedmetadata",
+    updatePlayer
+);
+
+
+audio.addEventListener(
+    "durationchange",
+    updatePlayer
+);
+
+
+audio.addEventListener(
+    "canplay",
+    updatePlayer
+);
+
+
+/* =========================
+   AUDIO TERMINADO
+========================= */
+
+audio.addEventListener(
+    "ended",
+    function() {
+
+        audio.currentTime = 0;
+
+        updatePlayer();
+
+    }
+);
+
+
+/* =========================
+   BUSCAR POSICIÓN
+========================= */
+
+function seekAudio(clientX) {
+
+
+    const rect =
+        progress.getBoundingClientRect();
+
+
+    let percentage =
+
+        (clientX - rect.left)
+        /
+        rect.width;
+
+
+    percentage =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                percentage
+            )
+        );
+
+
+    if (
+        Number.isFinite(audio.duration)
+        &&
+        audio.duration > 0
+    ) {
+
+
+        audio.currentTime =
+
+            percentage
+            *
+            audio.duration;
+
+
+        updatePlayer();
+
+    }
+
+}
+
+
+/* =========================
+   CLIC EN BARRA
+========================= */
+
+progress.addEventListener(
+    "click",
+    function(event) {
+
+        seekAudio(
+            event.clientX
+        );
+
+    }
+);
+
+
+/* =========================
+   CELULAR
+========================= */
+
+progress.addEventListener(
+    "touchstart",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const touch =
+            event.touches[0];
+
+
+        seekAudio(
+            touch.clientX
+        );
+
+    },
+    {
+        passive: false
+    }
+);
+
+
+/* =========================
+   INICIALIZAR
+========================= */
+
+updatePlayer();
+
+</script>
+
+
+</body>
+</html>
