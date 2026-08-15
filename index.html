@@ -2,7 +2,6 @@
 <html lang="es">
 
 <head>
-
 <meta charset="UTF-8">
 
 <meta name="viewport"
@@ -10,12 +9,7 @@
 
 <title>Mercados Solidarios</title>
 
-
 <style>
-
-/* =====================================================
-   CONFIGURACIÓN GENERAL
-===================================================== */
 
 * {
     box-sizing: border-box;
@@ -49,7 +43,6 @@ body {
     margin: 0 auto;
 
     line-height: 0;
-
 }
 
 
@@ -68,7 +61,6 @@ body {
     margin: 0;
 
     padding: 0;
-
 }
 
 
@@ -77,21 +69,42 @@ body {
 ===================================================== */
 
 /*
-   REFERENCIA:
+   IMPORTANTE:
+
+   El reproductor está AMARRADO a la imagen.
+
+   No usamos posiciones diferentes para celular.
+
+   Estos cuatro valores representan la zona
+   proporcional de la pieza.
+
+   TOP:
+   posición vertical
+
+   LEFT:
+   posición horizontal
+
+   WIDTH:
+   ancho del reproductor
+
+   HEIGHT:
+   alto del reproductor
+
+   La zona de referencia es:
+
    "Mensaje Mercados Solidarios"
-
-   Esta posición se mantiene proporcional
-   tanto en computador como en celular.
-
-   76% = posición actual de referencia.
-
-   Si posteriormente necesitamos un pequeño ajuste,
-   solamente modificaremos este número.
 */
+
 
 :root {
 
-    --audio-top: 72%;
+    --audio-top: 73.5%;
+
+    --audio-left: 10%;
+
+    --audio-width: 80%;
+
+    --audio-height: 5.8%;
 
 }
 
@@ -104,26 +117,13 @@ body {
 
     position: absolute;
 
-    /*
-       ANCLADO A LA IMAGEN
-    */
-
     top: var(--audio-top);
 
-    left: 10%;
+    left: var(--audio-left);
 
-    width: 80%;
+    width: var(--audio-width);
 
-
-    /*
-       ALTURA DEL REPRODUCTOR
-    */
-
-    height: 6%;
-
-    min-height: 58px;
-
-    max-height: 82px;
+    height: var(--audio-height);
 
 
     display: flex;
@@ -132,8 +132,7 @@ body {
 
 
     /*
-       FONDO BLANCO SÓLIDO
-       NO TRANSPARENTE
+       BLANCO COMPLETAMENTE OPACO
     */
 
     background: #ffffff;
@@ -146,12 +145,19 @@ body {
 
 
     box-shadow:
-
-        0 5px 14px
-        rgba(0,0,0,0.13);
+        0 4px 12px rgba(0,0,0,0.14);
 
 
-    z-index: 50;
+    z-index: 20;
+
+
+    /*
+       MUY IMPORTANTE:
+
+       El tamaño se adapta a la imagen.
+    */
+
+    overflow: hidden;
 
 }
 
@@ -164,12 +170,11 @@ body {
 
     position: relative;
 
+    flex-shrink: 0;
+
     width: 58px;
 
     height: 58px;
-
-    min-width: 58px;
-
 
     border: none;
 
@@ -181,15 +186,9 @@ body {
     color: #ffffff;
 
 
-    font-size: 25px;
+    font-size: 24px;
 
     line-height: 1;
-
-
-    padding: 0;
-
-
-    cursor: pointer;
 
 
     display: flex;
@@ -199,16 +198,14 @@ body {
     justify-content: center;
 
 
-    /*
-       RELIEVE 3D
-    */
+    cursor: pointer;
+
 
     box-shadow:
 
         0 5px 0 #3f6f16,
 
-        0 9px 16px
-        rgba(0,0,0,0.22),
+        0 8px 15px rgba(0,0,0,0.22),
 
         inset 0 2px 3px
         rgba(255,255,255,0.35);
@@ -216,31 +213,28 @@ body {
 
     transition:
 
-        transform 0.15s ease,
+        transform .15s ease,
 
-        box-shadow 0.15s ease;
+        box-shadow .15s ease;
 
 }
 
 
 /* =====================================================
-   EFECTO HOVER
+   HOVER
 ===================================================== */
 
 .play-btn:hover {
 
     transform:
-
         translateY(-3px)
-        scale(1.03);
-
+        scale(1.04);
 
     box-shadow:
 
         0 8px 0 #3f6f16,
 
-        0 13px 20px
-        rgba(0,0,0,0.25),
+        0 12px 19px rgba(0,0,0,0.25),
 
         inset 0 2px 4px
         rgba(255,255,255,0.45);
@@ -249,23 +243,20 @@ body {
 
 
 /* =====================================================
-   EFECTO AL PRESIONAR
+   CLICK
 ===================================================== */
 
 .play-btn:active {
 
     transform:
-
-        translateY(4px)
-        scale(0.97);
-
+        translateY(3px)
+        scale(.97);
 
     box-shadow:
 
         0 2px 0 #3f6f16,
 
-        0 5px 9px
-        rgba(0,0,0,0.18),
+        0 5px 9px rgba(0,0,0,0.18),
 
         inset 0 3px 5px
         rgba(0,0,0,0.12);
@@ -274,17 +265,13 @@ body {
 
 
 /* =====================================================
-   PULSO MIENTRAS SE REPRODUCE
+   ANIMACIÓN MIENTRAS REPRODUCE
 ===================================================== */
 
 .play-btn.playing {
 
     animation:
-
-        audioPulse
-        1.6s
-        infinite
-        ease-in-out;
+        audioPulse 1.6s infinite ease-in-out;
 
 }
 
@@ -298,16 +285,15 @@ body {
             0 5px 0 #3f6f16,
 
             0 0 0 0
-            rgba(91,149,30,0.50),
+            rgba(91,149,30,.45),
 
-            0 9px 16px
-            rgba(0,0,0,0.22),
+            0 8px 15px
+            rgba(0,0,0,.22),
 
             inset 0 2px 3px
-            rgba(255,255,255,0.35);
+            rgba(255,255,255,.35);
 
     }
-
 
     50% {
 
@@ -315,17 +301,16 @@ body {
 
             0 5px 0 #3f6f16,
 
-            0 0 0 13px
-            rgba(91,149,30,0.08),
+            0 0 0 12px
+            rgba(91,149,30,.08),
 
-            0 11px 19px
-            rgba(0,0,0,0.24),
+            0 10px 18px
+            rgba(0,0,0,.24),
 
             inset 0 2px 3px
-            rgba(255,255,255,0.35);
+            rgba(255,255,255,.35);
 
     }
-
 
     100% {
 
@@ -336,11 +321,11 @@ body {
             0 0 0 0
             rgba(91,149,30,0),
 
-            0 9px 16px
-            rgba(0,0,0,0.22),
+            0 8px 15px
+            rgba(0,0,0,.22),
 
             inset 0 2px 3px
-            rgba(255,255,255,0.35);
+            rgba(255,255,255,.35);
 
     }
 
@@ -348,7 +333,7 @@ body {
 
 
 /* =====================================================
-   INFORMACIÓN DEL AUDIO
+   ZONA DE INFORMACIÓN
 ===================================================== */
 
 .audio-info {
@@ -379,15 +364,15 @@ body {
 
     color: #444444;
 
-    margin-bottom: 5px;
-
     line-height: 1;
+
+    margin-bottom: 5px;
 
 }
 
 
 /* =====================================================
-   BARRA DE PROGRESO
+   BARRA
 ===================================================== */
 
 .progress-container {
@@ -404,13 +389,11 @@ body {
 
     cursor: pointer;
 
-    overflow: visible;
-
 }
 
 
 /* =====================================================
-   BARRA VERDE
+   PROGRESO
 ===================================================== */
 
 .progress-bar {
@@ -429,15 +412,11 @@ body {
 
     border-radius: 20px;
 
-    transition:
-
-        width 0.08s linear;
-
 }
 
 
 /* =====================================================
-   PUNTO DE AVANCE
+   PUNTO
 ===================================================== */
 
 .progress-knob {
@@ -459,15 +438,8 @@ body {
     transform:
         translate(-50%, -50%);
 
-
     box-shadow:
-
-        0 2px 5px
-        rgba(0,0,0,0.25),
-
-        inset 0 1px 2px
-        rgba(255,255,255,0.75);
-
+        0 2px 5px rgba(0,0,0,.25);
 
     pointer-events: none;
 
@@ -475,18 +447,18 @@ body {
 
 
 /* =====================================================
-   ICONO DE VOLUMEN
+   VOLUMEN
 ===================================================== */
 
 .volume {
 
+    flex-shrink: 0;
+
     margin-left: 14px;
 
-    font-size: 19px;
+    font-size: 18px;
 
     line-height: 1;
-
-    user-select: none;
 
 }
 
@@ -506,39 +478,24 @@ body {
    CELULAR
 ===================================================== */
 
-/*
-   IMPORTANTE:
-
-   NO cambiamos la posición vertical.
-
-   Se conserva el mismo --audio-top,
-   porque el reproductor está dentro
-   del contenedor de la imagen.
-*/
-
 @media (max-width: 700px) {
-
 
     .audio-overlay {
 
-        left: 7%;
-
-        width: 86%;
+        /*
+           MISMA POSICIÓN PROPORCIONAL
+        */
 
         top: var(--audio-top);
 
+        left: var(--audio-left);
 
-        height: 6%;
+        width: var(--audio-width);
 
-        min-height: 48px;
-
-        max-height: 62px;
+        height: var(--audio-height);
 
 
-        padding:
-
-            5px 9px;
-
+        padding: 5px 9px;
 
         border-radius: 14px;
 
@@ -551,8 +508,6 @@ body {
 
         height: 44px;
 
-        min-width: 44px;
-
         font-size: 19px;
 
 
@@ -560,11 +515,10 @@ body {
 
             0 4px 0 #3f6f16,
 
-            0 7px 12px
-            rgba(0,0,0,0.20),
+            0 7px 12px rgba(0,0,0,.20),
 
             inset 0 2px 3px
-            rgba(255,255,255,0.35);
+            rgba(255,255,255,.35);
 
     }
 
@@ -613,29 +567,22 @@ body {
 
 
 /* =====================================================
-   CELULAR PEQUEÑO
+   CELULARES PEQUEÑOS
 ===================================================== */
 
 @media (max-width: 420px) {
 
-
     .audio-overlay {
-
-        left: 6%;
-
-        width: 88%;
 
         top: var(--audio-top);
 
+        left: var(--audio-left);
 
-        height: 6%;
+        width: var(--audio-width);
 
-        min-height: 43px;
+        height: var(--audio-height);
 
-
-        padding:
-
-            4px 7px;
+        padding: 4px 7px;
 
     }
 
@@ -645,8 +592,6 @@ body {
         width: 39px;
 
         height: 39px;
-
-        min-width: 39px;
 
         font-size: 17px;
 
@@ -724,26 +669,18 @@ body {
     <div class="audio-overlay">
 
 
-        <!-- BOTÓN PLAY -->
-
         <button
             id="playBtn"
             class="play-btn"
             type="button"
             aria-label="Reproducir audio"
         >
-
             ▶
-
         </button>
 
 
-        <!-- INFORMACIÓN -->
-
         <div class="audio-info">
 
-
-            <!-- TIEMPO -->
 
             <div class="audio-time">
 
@@ -762,8 +699,6 @@ body {
             </div>
 
 
-            <!-- BARRA -->
-
             <div
                 id="progressContainer"
                 class="progress-container"
@@ -774,7 +709,6 @@ body {
                     class="progress-bar"
                 ></div>
 
-
                 <div
                     id="progressKnob"
                     class="progress-knob"
@@ -782,16 +716,12 @@ body {
 
             </div>
 
-
         </div>
 
-
-        <!-- VOLUMEN -->
 
         <div class="volume">
             🔊
         </div>
-
 
     </div>
 
@@ -799,7 +729,7 @@ body {
 
 
 <!-- =====================================================
-     AUDIO REAL
+     AUDIO
 ===================================================== -->
 
 <audio
@@ -817,51 +747,30 @@ body {
 
 <script>
 
-
 /* =====================================================
    ELEMENTOS
 ===================================================== */
 
 const audio =
-    document.getElementById(
-        "audio"
-    );
-
+    document.getElementById("audio");
 
 const playBtn =
-    document.getElementById(
-        "playBtn"
-    );
-
+    document.getElementById("playBtn");
 
 const progressContainer =
-    document.getElementById(
-        "progressContainer"
-    );
-
+    document.getElementById("progressContainer");
 
 const progressBar =
-    document.getElementById(
-        "progressBar"
-    );
-
+    document.getElementById("progressBar");
 
 const progressKnob =
-    document.getElementById(
-        "progressKnob"
-    );
-
+    document.getElementById("progressKnob");
 
 const currentTime =
-    document.getElementById(
-        "currentTime"
-    );
-
+    document.getElementById("currentTime");
 
 const duration =
-    document.getElementById(
-        "duration"
-    );
+    document.getElementById("duration");
 
 
 /* =====================================================
@@ -871,39 +780,24 @@ const duration =
 function formatTime(seconds) {
 
     if (
-        !isFinite(seconds) ||
+        !Number.isFinite(seconds) ||
         seconds < 0
     ) {
-
         return "00:00";
-
     }
 
-
     const minutes =
-
-        Math.floor(
-            seconds / 60
-        );
-
+        Math.floor(seconds / 60);
 
     const secs =
-
-        Math.floor(
-            seconds % 60
-        );
-
+        Math.floor(seconds % 60);
 
     return (
 
         String(minutes)
             .padStart(2, "0")
 
-        +
-
-        ":"
-
-        +
+        + ":" +
 
         String(secs)
             .padStart(2, "0")
@@ -914,28 +808,32 @@ function formatTime(seconds) {
 
 
 /* =====================================================
-   CARGAR DURACIÓN
+   DURACIÓN
 ===================================================== */
+
+function updateDuration() {
+
+    if (
+        Number.isFinite(audio.duration)
+    ) {
+
+        duration.textContent =
+            formatTime(audio.duration);
+
+    }
+
+}
+
 
 audio.addEventListener(
     "loadedmetadata",
-    function() {
+    updateDuration
+);
 
-        if (
-            isFinite(
-                audio.duration
-            )
-        ) {
 
-            duration.textContent =
-
-                formatTime(
-                    audio.duration
-                );
-
-        }
-
-    }
+audio.addEventListener(
+    "durationchange",
+    updateDuration
 );
 
 
@@ -945,27 +843,26 @@ audio.addEventListener(
 
 playBtn.addEventListener(
     "click",
-    function() {
+    async function() {
 
-        if (
-            audio.paused
-        ) {
+        try {
 
-            audio.play()
-                .catch(
-                    function(error) {
+            if (audio.paused) {
 
-                        console.error(
-                            "Error reproduciendo audio:",
-                            error
-                        );
+                await audio.play();
 
-                    }
-                );
+            } else {
 
-        } else {
+                audio.pause();
 
-            audio.pause();
+            }
+
+        } catch (error) {
+
+            console.error(
+                "No se pudo reproducir el audio:",
+                error
+            );
 
         }
 
@@ -974,15 +871,14 @@ playBtn.addEventListener(
 
 
 /* =====================================================
-   REPRODUCIENDO
+   PLAY
 ===================================================== */
 
 audio.addEventListener(
     "play",
     function() {
 
-        playBtn.innerHTML =
-            "❚❚";
+        playBtn.innerHTML = "❚❚";
 
         playBtn.classList.add(
             "playing"
@@ -993,15 +889,14 @@ audio.addEventListener(
 
 
 /* =====================================================
-   PAUSADO
+   PAUSA
 ===================================================== */
 
 audio.addEventListener(
     "pause",
     function() {
 
-        playBtn.innerHTML =
-            "▶";
+        playBtn.innerHTML = "▶";
 
         playBtn.classList.remove(
             "playing"
@@ -1012,7 +907,7 @@ audio.addEventListener(
 
 
 /* =====================================================
-   ACTUALIZAR BARRA Y TIEMPO
+   PROGRESO
 ===================================================== */
 
 audio.addEventListener(
@@ -1020,14 +915,10 @@ audio.addEventListener(
     function() {
 
         if (
-            !isFinite(
-                audio.duration
-            ) ||
+            !Number.isFinite(audio.duration) ||
             audio.duration <= 0
         ) {
-
             return;
-
         }
 
 
@@ -1040,17 +931,14 @@ audio.addEventListener(
 
 
         progressBar.style.width =
-
             percentage + "%";
 
 
         progressKnob.style.left =
-
             percentage + "%";
 
 
         currentTime.textContent =
-
             formatTime(
                 audio.currentTime
             );
@@ -1060,7 +948,7 @@ audio.addEventListener(
 
 
 /* =====================================================
-   CLIC EN LA BARRA
+   ADELANTAR / RETROCEDER
 ===================================================== */
 
 progressContainer.addEventListener(
@@ -1068,31 +956,24 @@ progressContainer.addEventListener(
     function(event) {
 
         if (
-            !isFinite(
-                audio.duration
-            )
+            !Number.isFinite(audio.duration) ||
+            audio.duration <= 0
         ) {
-
             return;
-
         }
 
 
         const rect =
-
             progressContainer
                 .getBoundingClientRect();
 
 
-        const position =
-
-            event.clientX -
-            rect.left;
-
-
         let percentage =
 
-            position /
+            (
+                event.clientX -
+                rect.left
+            ) /
             rect.width;
 
 
@@ -1117,79 +998,14 @@ progressContainer.addEventListener(
 
 
 /* =====================================================
-   SOPORTE PARA TOQUE EN CELULAR
-===================================================== */
-
-progressContainer.addEventListener(
-    "touchstart",
-    function(event) {
-
-        if (
-            !isFinite(
-                audio.duration
-            )
-        ) {
-
-            return;
-
-        }
-
-
-        const touch =
-            event.touches[0];
-
-
-        const rect =
-
-            progressContainer
-                .getBoundingClientRect();
-
-
-        const position =
-
-            touch.clientX -
-            rect.left;
-
-
-        let percentage =
-
-            position /
-            rect.width;
-
-
-        percentage =
-
-            Math.max(
-                0,
-                Math.min(
-                    1,
-                    percentage
-                )
-            );
-
-
-        audio.currentTime =
-
-            percentage *
-            audio.duration;
-
-    },
-    {
-        passive: true
-    }
-);
-
-
-/* =====================================================
-   CUANDO TERMINA EL AUDIO
+   FIN DEL AUDIO
 ===================================================== */
 
 audio.addEventListener(
     "ended",
     function() {
 
-        playBtn.innerHTML =
-            "▶";
+        playBtn.innerHTML = "▶";
 
         playBtn.classList.remove(
             "playing"
@@ -1209,32 +1025,21 @@ audio.addEventListener(
 
 
 /* =====================================================
-   ACTUALIZAR DURACIÓN
+   ERROR DE AUDIO
 ===================================================== */
 
 audio.addEventListener(
-    "durationchange",
+    "error",
     function() {
 
-        if (
-            isFinite(
-                audio.duration
-            )
-        ) {
-
-            duration.textContent =
-
-                formatTime(
-                    audio.duration
-                );
-
-        }
+        console.error(
+            "No se pudo cargar Mercados_Solidarios.mp3"
+        );
 
     }
 );
 
 </script>
-
 
 </body>
 
