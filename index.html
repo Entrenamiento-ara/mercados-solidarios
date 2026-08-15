@@ -1,488 +1,617 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Campaña de solidaridad</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Mercados Solidarios</title>
+
 
 <style>
-*{
-    box-sizing:border-box;
+
+/* =========================================================
+   CONFIGURACIÓN GENERAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
 }
 
 html,
-body{
-    margin:0;
-    padding:0;
-    width:100%;
-    min-height:100%;
-    background:#ffffff;
-    font-family:Arial, Helvetica, sans-serif;
+body {
+
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+
+    background: #ffffff;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
 
-.page{
-    width:100%;
-    display:flex;
-    justify-content:center;
-    padding:0;
-}
-
-.piece{
-    position:relative;
-    width:100%;
-    max-width:1600px;
-    line-height:0;
-    overflow:hidden;
-}
-
-.piece img{
-    display:block;
-    width:100%;
-    height:auto;
-}
-
-/* =========================================================
-   CAPAS PARA OCULTAR LOS LOGOS
-   ========================================================= */
-
-/*
-   Estas capas permiten ocultar visualmente los logos que
-   están incluidos dentro de la imagen.
-
-   Si alguno queda visible, solo modificamos estas posiciones.
-*/
-
-/* Logo Ara de la parte superior izquierda */
-.hide-ara{
-    position:absolute;
-    left:0%;
-    top:0%;
-    width:22%;
-    height:17%;
-    background:#ffffff;
-    z-index:5;
-    pointer-events:none;
-    display:none;
-}
-
-/* Logo Mercados Solidarios */
-.hide-mercados{
-    position:absolute;
-    right:0%;
-    top:0%;
-    width:28%;
-    height:19%;
-    background:#ffffff;
-    z-index:5;
-    pointer-events:none;
-    display:none;
+body {
+    overflow-x: hidden;
 }
 
 
 /* =========================================================
-   ZONA INTERACTIVA DEL AUDIO
-   ========================================================= */
+   CONTENEDOR DE LA PIEZA
+========================================================= */
 
-/*
-   TODO el reproductor está encima de la imagen.
+.pieza-container {
 
-   No reemplaza la pieza.
-   Solo coloca elementos transparentes/interactivos
-   sobre el reproductor dibujado en la imagen.
-*/
+    position: relative;
 
-.audio-area{
-    position:absolute;
+    width: 100%;
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    line-height: 0;
+}
+
+
+/* =========================================================
+   IMAGEN
+========================================================= */
+
+.pieza {
+
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+
+/* =========================================================
+   REPRODUCTOR
+========================================================= */
+
+.audio-overlay {
+
+    position: absolute;
 
     /*
-      POSICIÓN VERTICAL DEL REPRODUCTOR
+       IMPORTANTE:
 
-      Si necesitas mover TODO el reproductor:
-      cambia únicamente este número.
+       El reproductor está colocado desde ABAJO
+       para que no tape la frase superior.
+
+       Si necesitas moverlo:
+
+       bottom: 10%  -> más abajo
+
+       bottom: 14%  -> más arriba
     */
-    top:52%;
 
-    left:10%;
-    width:80%;
-    height:15%;
+    left: 10%;
 
-    z-index:10;
+    right: 10%;
+
+    bottom: 10%;
+
+    height: 12%;
+
+    min-height: 90px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 10px 18px;
+
+    background: rgba(255,255,255,0.96);
+
+    border-radius: 25px;
+
+    box-shadow:
+
+        0 7px 20px
+        rgba(0,0,0,0.14);
+
+    z-index: 20;
 }
 
 
 /* =========================================================
    BOTÓN PLAY
-   ========================================================= */
+========================================================= */
 
-.play-button{
-    position:absolute;
+.play-btn {
 
-    left:0%;
-    top:8%;
+    position: relative;
 
-    width:13%;
-    aspect-ratio:1 / 1;
+    width: 72px;
 
-    border-radius:50%;
+    height: 72px;
 
-    border:0;
+    min-width: 72px;
 
-    cursor:pointer;
+    border: none;
 
-    background:rgba(255,255,255,0.04);
+    border-radius: 50%;
 
-    /*
-      Relieve
-    */
+    background: #5b951e;
+
+    color: white;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 30px;
+
+    line-height: 1;
+
+    padding: 0;
+
     box-shadow:
-        0 8px 14px rgba(0,0,0,0.22),
-        inset 0 2px 3px rgba(255,255,255,0.70),
-        inset 0 -3px 5px rgba(0,0,0,0.18);
+
+        0 6px 0 #3f6f16,
+
+        0 10px 18px
+        rgba(0,0,0,0.22);
 
     transition:
-        transform .15s ease,
-        box-shadow .15s ease,
-        filter .15s ease;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+        transform 0.15s ease,
 
-    padding:0;
-}
-
-
-/* Triángulo del Play */
-.play-icon{
-    width:0;
-    height:0;
-
-    border-top:18px solid transparent;
-    border-bottom:18px solid transparent;
-    border-left:29px solid #4c8f1f;
-
-    margin-left:7px;
-
-    filter:
-        drop-shadow(0 2px 1px rgba(0,0,0,0.25));
-
-    transition:all .2s ease;
-}
-
-
-/* Hover */
-.play-button:hover{
-    transform:translateY(-2px) scale(1.03);
-
-    box-shadow:
-        0 11px 18px rgba(0,0,0,0.26),
-        inset 0 2px 4px rgba(255,255,255,0.80),
-        inset 0 -3px 5px rgba(0,0,0,0.15);
-}
-
-
-/* Al presionar */
-.play-button:active{
-    transform:translateY(2px) scale(.97);
-
-    box-shadow:
-        0 3px 7px rgba(0,0,0,0.25),
-        inset 0 3px 6px rgba(0,0,0,0.15);
+        box-shadow 0.15s ease;
 }
 
 
 /* =========================================================
-   ANIMACIÓN CUANDO ESTÁ REPRODUCIENDO
-   ========================================================= */
+   EFECTO HOVER
+========================================================= */
 
-.play-button.playing{
-    animation:audioPulse 1.8s infinite ease-in-out;
+.play-btn:hover {
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+
+        0 9px 0 #3f6f16,
+
+        0 14px 22px
+        rgba(0,0,0,0.25);
 }
 
-@keyframes audioPulse{
 
-    0%{
-        transform:scale(1);
+/* =========================================================
+   EFECTO AL PRESIONAR
+========================================================= */
+
+.play-btn:active {
+
+    transform:
+        translateY(4px);
+
+    box-shadow:
+
+        0 2px 0 #3f6f16,
+
+        0 5px 10px
+        rgba(0,0,0,0.18);
+}
+
+
+/* =========================================================
+   EFECTO MIENTRAS REPRODUCE
+========================================================= */
+
+.play-btn.playing {
+
+    animation:
+        audioPulse 1.6s
+        infinite ease-in-out;
+}
+
+
+@keyframes audioPulse {
+
+    0% {
+
         box-shadow:
-            0 8px 14px rgba(0,0,0,0.22),
-            0 0 0 0 rgba(76,143,31,0.45),
-            inset 0 2px 3px rgba(255,255,255,0.70),
-            inset 0 -3px 5px rgba(0,0,0,0.18);
+
+            0 6px 0 #3f6f16,
+
+            0 0 0 0
+            rgba(91,149,30,0.50);
+
     }
 
-    50%{
-        transform:scale(1.045);
+    50% {
+
         box-shadow:
-            0 10px 17px rgba(0,0,0,0.24),
-            0 0 0 12px rgba(76,143,31,0.10),
-            inset 0 2px 3px rgba(255,255,255,0.70),
-            inset 0 -3px 5px rgba(0,0,0,0.18);
+
+            0 6px 0 #3f6f16,
+
+            0 0 0 14px
+            rgba(91,149,30,0.10);
+
     }
 
-    100%{
-        transform:scale(1);
+    100% {
+
         box-shadow:
-            0 8px 14px rgba(0,0,0,0.22),
-            0 0 0 0 rgba(76,143,31,0),
-            inset 0 2px 3px rgba(255,255,255,0.70),
-            inset 0 -3px 5px rgba(0,0,0,0.18);
+
+            0 6px 0 #3f6f16,
+
+            0 0 0 0
+            rgba(91,149,30,0);
+
     }
 }
 
 
 /* =========================================================
-   BARRA DE PROGRESO
-   ========================================================= */
+   CONTENEDOR INFORMACIÓN
+========================================================= */
 
-.progress-zone{
-    position:absolute;
+.audio-info {
 
-    left:17%;
-    top:28%;
+    flex: 1;
 
-    width:70%;
-    height:25%;
+    min-width: 0;
 
-    display:flex;
-    align-items:center;
+    margin-left: 20px;
+
+    line-height: normal;
 }
 
 
-/* Barra base */
-.progress-bar{
-    position:relative;
+/* =========================================================
+   TITULO
+========================================================= */
 
-    width:100%;
-    height:14px;
+.audio-title {
 
-    border-radius:20px;
-
-    background:rgba(90,90,90,0.22);
-
-    overflow:hidden;
-
-    cursor:pointer;
-
-    box-shadow:
-        inset 0 2px 4px rgba(0,0,0,0.18),
-        0 1px 1px rgba(255,255,255,0.6);
-}
-
-
-/* Parte que avanza */
-.progress-fill{
-    position:absolute;
-
-    left:0;
-    top:0;
-
-    width:0%;
-
-    height:100%;
-
-    border-radius:20px;
-
-    background:#5b951e;
-
-    transition:width .08s linear;
-}
-
-
-/* Punto que se mueve */
-.progress-knob{
-    position:absolute;
-
-    top:50%;
-
-    left:0%;
-
-    width:22px;
-    height:22px;
-
-    border-radius:50%;
-
-    background:#5b951e;
-
-    transform:translate(-50%,-50%);
-
-    box-shadow:
-        0 3px 6px rgba(0,0,0,0.25),
-        inset 0 1px 2px rgba(255,255,255,0.7);
-
-    pointer-events:none;
+    display: none;
 }
 
 
 /* =========================================================
    TIEMPO
-   ========================================================= */
+========================================================= */
 
-.time-display{
-    position:absolute;
+.audio-time {
 
-    left:17%;
-    top:60%;
+    font-size: 14px;
 
-    width:25%;
+    color: #444444;
 
-    font-size:clamp(14px,2vw,27px);
+    margin-bottom: 7px;
 
-    line-height:1;
-
-    color:#333333;
-
-    white-space:nowrap;
-
-    font-weight:500;
-
-    pointer-events:none;
+    line-height: 1;
 }
 
-.current-time{
-    color:#5b951e;
+
+/* =========================================================
+   BARRA
+========================================================= */
+
+.progress-container {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 10px;
+
+    background: #dedede;
+
+    border-radius: 20px;
+
+    overflow: visible;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   BARRA VERDE
+========================================================= */
+
+.progress-bar {
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    width: 0%;
+
+    height: 100%;
+
+    background: #5b951e;
+
+    border-radius: 20px;
+
+    transition:
+        width 0.08s linear;
+}
+
+
+/* =========================================================
+   PUNTO DE AVANCE
+========================================================= */
+
+.progress-knob {
+
+    position: absolute;
+
+    left: 0%;
+
+    top: 50%;
+
+    width: 18px;
+
+    height: 18px;
+
+    border-radius: 50%;
+
+    background: #5b951e;
+
+    transform:
+        translate(-50%,-50%);
+
+    box-shadow:
+
+        0 3px 6px
+        rgba(0,0,0,0.25),
+
+        inset 0 1px 2px
+        rgba(255,255,255,0.75);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   VOLUMEN
+========================================================= */
+
+.volume {
+
+    margin-left: 18px;
+
+    font-size: 22px;
+
+    line-height: 1;
+
+    user-select: none;
 }
 
 
 /* =========================================================
    AUDIO REAL
-   ========================================================= */
+========================================================= */
 
-#audio{
-    display:none;
+#audio {
+
+    display: none;
 }
 
 
 /* =========================================================
-   RESPONSIVE
-   ========================================================= */
+   CELULAR
+========================================================= */
 
-@media(max-width:700px){
+@media (max-width: 700px) {
 
-    .audio-area{
-        top:52%;
-        left:9%;
-        width:82%;
-        height:16%;
+
+    .audio-overlay {
+
+        left: 7%;
+
+        right: 7%;
+
+        bottom: 8%;
+
+        height: 13%;
+
+        min-height: 72px;
+
+        padding:
+            8px 10px;
+
+        border-radius: 18px;
     }
 
-    .play-button{
-        width:15%;
-        top:8%;
+
+    .play-btn {
+
+        width: 52px;
+
+        height: 52px;
+
+        min-width: 52px;
+
+        font-size: 22px;
+
+        box-shadow:
+
+            0 4px 0 #3f6f16,
+
+            0 7px 12px
+            rgba(0,0,0,0.20);
     }
 
-    .play-icon{
-        border-top-width:11px;
-        border-bottom-width:11px;
-        border-left-width:18px;
-        margin-left:4px;
+
+    .audio-info {
+
+        margin-left: 12px;
     }
 
-    .progress-zone{
-        left:17%;
-        width:70%;
-        top:29%;
+
+    .audio-time {
+
+        font-size: 11px;
+
+        margin-bottom: 5px;
     }
 
-    .progress-bar{
-        height:9px;
+
+    .progress-container {
+
+        height: 7px;
     }
 
-    .progress-knob{
-        width:16px;
-        height:16px;
+
+    .progress-knob {
+
+        width: 13px;
+
+        height: 13px;
     }
 
-    .time-display{
-        left:17%;
-        top:61%;
-        font-size:14px;
+
+    .volume {
+
+        font-size: 17px;
+
+        margin-left: 8px;
     }
+
+}
+
+
+/* =========================================================
+   CELULAR PEQUEÑO
+========================================================= */
+
+@media (max-width: 420px) {
+
+
+    .audio-overlay {
+
+        left: 5%;
+
+        right: 5%;
+
+        bottom: 7%;
+
+        min-height: 64px;
+
+        padding: 6px 8px;
+    }
+
+
+    .play-btn {
+
+        width: 46px;
+
+        height: 46px;
+
+        min-width: 46px;
+
+        font-size: 19px;
+    }
+
+
+    .audio-info {
+
+        margin-left: 9px;
+    }
+
+
+    .audio-time {
+
+        font-size: 10px;
+    }
+
+
+    .volume {
+
+        font-size: 15px;
+
+        margin-left: 5px;
+    }
+
 }
 
 </style>
+
 </head>
 
 
 <body>
 
-<div class="page">
 
-    <div class="piece">
+<!-- =====================================================
+     PIEZA
+===================================================== -->
 
-        <!-- IMAGEN PRINCIPAL -->
-        <img
-            src="Final_mercados.png"
-            alt="Campaña de solidaridad"
+<div class="pieza-container">
+
+
+    <!-- IMAGEN -->
+
+    <img
+        src="Final_mercados.png"
+        alt="Mercados Solidarios"
+        class="pieza"
+    >
+
+
+    <!-- =================================================
+         REPRODUCTOR
+    ================================================= -->
+
+    <div class="audio-overlay">
+
+
+        <!-- BOTÓN -->
+
+        <button
+            id="playBtn"
+            class="play-btn"
+            type="button"
+            aria-label="Reproducir audio"
         >
 
+            ▶
 
-        <!--
-        =====================================================
-        CAPAS DE OCULTAMIENTO
-
-        Las dejamos inicialmente DESACTIVADAS.
-
-        Si al publicar todavía aparecen los logos,
-        quitamos "display:none" de la capa correspondiente.
-        =====================================================
-        -->
-
-        <div class="hide-ara"></div>
-
-        <div class="hide-mercados"></div>
+        </button>
 
 
-        <!-- AUDIO -->
-        <div class="audio-area">
+        <!-- INFORMACIÓN -->
 
-            <!-- BOTÓN -->
-            <button
-                id="playButton"
-                class="play-button"
-                aria-label="Reproducir mensaje"
-                type="button"
-            >
-                <span
-                    id="playIcon"
-                    class="play-icon"
-                ></span>
-            </button>
-
-
-            <!-- BARRA -->
-            <div class="progress-zone">
-
-                <div
-                    id="progressBar"
-                    class="progress-bar"
-                    aria-label="Progreso del audio"
-                >
-
-                    <div
-                        id="progressFill"
-                        class="progress-fill"
-                    ></div>
-
-                    <div
-                        id="progressKnob"
-                        class="progress-knob"
-                    ></div>
-
-                </div>
-
-            </div>
+        <div class="audio-info">
 
 
             <!-- TIEMPO -->
-            <div class="time-display">
 
-                <span
-                    id="currentTime"
-                    class="current-time"
-                >00:00</span>
+            <div class="audio-time">
 
-                <span> / </span>
+                <span id="currentTime">
+                    00:00
+                </span>
+
+                <span>
+                    /
+                </span>
 
                 <span id="duration">
                     00:00
@@ -490,150 +619,223 @@ body{
 
             </div>
 
+
+            <!-- BARRA -->
+
+            <div
+                id="progressContainer"
+                class="progress-container"
+            >
+
+                <div
+                    id="progressBar"
+                    class="progress-bar"
+                ></div>
+
+
+                <div
+                    id="progressKnob"
+                    class="progress-knob"
+                ></div>
+
+            </div>
+
+
         </div>
 
 
-        <!-- AUDIO -->
-        <audio
-            id="audio"
-            preload="metadata"
-        >
-            <source
-                src="Mercados_Solidarios.mp3"
-                type="audio/mpeg"
-            >
+        <!-- VOLUMEN -->
 
-            Tu navegador no puede reproducir este audio.
-        </audio>
+        <div class="volume">
+
+            🔊
+
+        </div>
+
 
     </div>
+
 
 </div>
 
 
+<!-- =====================================================
+     AUDIO
+===================================================== -->
+
+<audio
+    id="audio"
+    preload="metadata"
+>
+
+    <source
+        src="Mercados_Solidarios.mp3"
+        type="audio/mpeg"
+    >
+
+</audio>
+
+
+
 <script>
 
-/* =========================================================
+
+/* =====================================================
    ELEMENTOS
-   ========================================================= */
+===================================================== */
 
 const audio =
-    document.getElementById("audio");
+    document.getElementById(
+        "audio"
+    );
 
-const playButton =
-    document.getElementById("playButton");
 
-const playIcon =
-    document.getElementById("playIcon");
+const playBtn =
+    document.getElementById(
+        "playBtn"
+    );
+
+
+const progressContainer =
+    document.getElementById(
+        "progressContainer"
+    );
+
 
 const progressBar =
-    document.getElementById("progressBar");
+    document.getElementById(
+        "progressBar"
+    );
 
-const progressFill =
-    document.getElementById("progressFill");
 
 const progressKnob =
-    document.getElementById("progressKnob");
+    document.getElementById(
+        "progressKnob"
+    );
+
 
 const currentTime =
-    document.getElementById("currentTime");
+    document.getElementById(
+        "currentTime"
+    );
+
 
 const duration =
-    document.getElementById("duration");
+    document.getElementById(
+        "duration"
+    );
 
 
-/* =========================================================
-   FORMATO DEL TIEMPO
-   ========================================================= */
 
-function formatTime(seconds){
+/* =====================================================
+   FORMATO TIEMPO
+===================================================== */
 
-    if(
-        !isFinite(seconds) ||
+function formatTime(
+    seconds
+) {
+
+
+    if (
+        !isFinite(seconds)
+        ||
         seconds < 0
-    ){
+    ) {
+
         return "00:00";
+
     }
 
+
     const minutes =
-        Math.floor(seconds / 60);
+        Math.floor(
+            seconds / 60
+        );
+
 
     const secs =
-        Math.floor(seconds % 60);
+        Math.floor(
+            seconds % 60
+        );
+
 
     return (
-        String(minutes).padStart(2,"0")
-        + ":" +
-        String(secs).padStart(2,"0")
+
+        String(minutes)
+            .padStart(2,"0")
+
+        +
+
+        ":"
+
+        +
+
+        String(secs)
+            .padStart(2,"0")
+
     );
+
 }
 
 
-/* =========================================================
-   DURACIÓN
-   ========================================================= */
+
+/* =====================================================
+   CARGAR DURACIÓN
+===================================================== */
 
 audio.addEventListener(
     "loadedmetadata",
-    function(){
+    function() {
 
-        duration.textContent =
-            formatTime(audio.duration);
+
+        if (
+            isFinite(
+                audio.duration
+            )
+        ) {
+
+            duration.textContent =
+                formatTime(
+                    audio.duration
+                );
+
+        }
 
     }
 );
 
 
-/* =========================================================
-   PLAY / PAUSE
-   ========================================================= */
 
-playButton.addEventListener(
+/* =====================================================
+   PLAY / PAUSA
+===================================================== */
+
+playBtn.addEventListener(
     "click",
-    function(){
+    function() {
 
-        if(audio.paused){
+
+        if (
+            audio.paused
+        ) {
+
 
             audio.play()
-                .then(function(){
+                .catch(
+                    function(error) {
 
-                    playButton.classList.add(
-                        "playing"
-                    );
+                        console.error(
+                            error
+                        );
 
-                    /*
-                      Cambiamos visualmente
-                      el triángulo a pausa.
-                    */
-                    playIcon.style.width = "10px";
-                    playIcon.style.height = "28px";
+                    }
+                );
 
-                    playIcon.style.borderTop =
-                        "0";
 
-                    playIcon.style.borderBottom =
-                        "0";
+        }
 
-                    playIcon.style.borderLeft =
-                        "7px solid #4c8f1f";
+        else {
 
-                    playIcon.style.borderRight =
-                        "7px solid #4c8f1f";
-
-                    playIcon.style.marginLeft =
-                        "0";
-
-                })
-                .catch(function(error){
-
-                    console.error(
-                        "No se pudo reproducir:",
-                        error
-                    );
-
-                });
-
-        }else{
 
             audio.pause();
 
@@ -643,15 +845,21 @@ playButton.addEventListener(
 );
 
 
-/* =========================================================
-   EVENTO PLAY
-   ========================================================= */
+
+/* =====================================================
+   CUANDO EMPIEZA
+===================================================== */
 
 audio.addEventListener(
     "play",
-    function(){
+    function() {
 
-        playButton.classList.add(
+
+        playBtn.innerHTML =
+            "❚❚";
+
+
+        playBtn.classList.add(
             "playing"
         );
 
@@ -659,72 +867,76 @@ audio.addEventListener(
 );
 
 
-/* =========================================================
-   EVENTO PAUSE
-   ========================================================= */
+
+/* =====================================================
+   CUANDO PAUSA
+===================================================== */
 
 audio.addEventListener(
     "pause",
-    function(){
+    function() {
 
-        playButton.classList.remove(
+
+        playBtn.innerHTML =
+            "▶";
+
+
+        playBtn.classList.remove(
             "playing"
         );
-
-        /*
-          Volvemos al triángulo.
-        */
-
-        playIcon.style.width = "0";
-        playIcon.style.height = "0";
-
-        playIcon.style.borderTop =
-            "18px solid transparent";
-
-        playIcon.style.borderBottom =
-            "18px solid transparent";
-
-        playIcon.style.borderLeft =
-            "29px solid #4c8f1f";
-
-        playIcon.style.borderRight =
-            "0";
-
-        playIcon.style.marginLeft =
-            "7px";
 
     }
 );
 
 
-/* =========================================================
-   ACTUALIZAR BARRA Y TIEMPO
-   ========================================================= */
+
+/* =====================================================
+   ACTUALIZAR PROGRESO
+===================================================== */
 
 audio.addEventListener(
     "timeupdate",
-    function(){
+    function() {
 
-        if(!audio.duration){
+
+        if (
+            !isFinite(
+                audio.duration
+            )
+            ||
+            audio.duration <= 0
+        ) {
+
             return;
+
         }
 
+
         const percentage =
-            (audio.currentTime /
-            audio.duration) * 100;
+
+            (
+                audio.currentTime
+                /
+                audio.duration
+            )
+            *
+            100;
 
 
-        /* Barra */
-        progressFill.style.width =
+        /* BARRA */
+
+        progressBar.style.width =
             percentage + "%";
 
 
-        /* Punto */
+        /* PUNTO */
+
         progressKnob.style.left =
             percentage + "%";
 
 
-        /* Tiempo */
+        /* TIEMPO */
+
         currentTime.textContent =
             formatTime(
                 audio.currentTime
@@ -734,54 +946,154 @@ audio.addEventListener(
 );
 
 
-/* =========================================================
-   CLIC SOBRE LA BARRA
-   ========================================================= */
 
-progressBar.addEventListener(
+/* =====================================================
+   CLICK EN BARRA
+===================================================== */
+
+progressContainer.addEventListener(
     "click",
-    function(event){
+    function(event) {
 
-        if(!audio.duration){
+
+        if (
+            !isFinite(
+                audio.duration
+            )
+        ) {
+
             return;
+
         }
 
+
         const rect =
-            progressBar.getBoundingClientRect();
+            progressContainer
+                .getBoundingClientRect();
+
 
         const position =
-            event.clientX -
+            event.clientX
+            -
             rect.left;
 
-        const percentage =
-            position /
+
+        let percentage =
+            position
+            /
             rect.width;
 
+
+        percentage =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    percentage
+                )
+            );
+
+
         audio.currentTime =
-            percentage *
+            percentage
+            *
             audio.duration;
 
     }
 );
 
 
-/* =========================================================
+
+/* =====================================================
+   TOQUE EN CELULAR
+===================================================== */
+
+progressContainer.addEventListener(
+    "touchstart",
+    function(event) {
+
+
+        if (
+            !isFinite(
+                audio.duration
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        const touch =
+            event.touches[0];
+
+
+        const rect =
+            progressContainer
+                .getBoundingClientRect();
+
+
+        const position =
+            touch.clientX
+            -
+            rect.left;
+
+
+        let percentage =
+            position
+            /
+            rect.width;
+
+
+        percentage =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    percentage
+                )
+            );
+
+
+        audio.currentTime =
+            percentage
+            *
+            audio.duration;
+
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+
+/* =====================================================
    CUANDO TERMINA
-   ========================================================= */
+===================================================== */
 
 audio.addEventListener(
     "ended",
-    function(){
+    function() {
 
-        playButton.classList.remove(
+
+        playBtn.innerHTML =
+            "▶";
+
+
+        playBtn.classList.remove(
             "playing"
         );
 
-        progressFill.style.width =
+
+        progressBar.style.width =
             "0%";
+
 
         progressKnob.style.left =
             "0%";
+
 
         currentTime.textContent =
             "00:00";
@@ -789,7 +1101,38 @@ audio.addEventListener(
     }
 );
 
+
+
+/* =====================================================
+   DURACIÓN ACTUALIZADA
+===================================================== */
+
+audio.addEventListener(
+    "durationchange",
+    function() {
+
+
+        if (
+            isFinite(
+                audio.duration
+            )
+        ) {
+
+
+            duration.textContent =
+                formatTime(
+                    audio.duration
+                );
+
+        }
+
+    }
+);
+
+
 </script>
 
+
 </body>
+
 </html>
