@@ -1,277 +1,184 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Mercados Solidarios</title>
 
-
 <style>
-
-/* =========================================================
-   CONFIGURACIÓN GENERAL
-========================================================= */
-
 * {
     box-sizing: border-box;
 }
 
 html,
 body {
-
     margin: 0;
     padding: 0;
-
     width: 100%;
-
     background: #ffffff;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
     overflow-x: hidden;
 }
 
-
-/* =========================================================
-   CONTENEDOR DE LA PIEZA
-========================================================= */
+/* =====================================================
+   PIEZA PRINCIPAL
+===================================================== */
 
 .pieza-container {
-
     position: relative;
-
     width: 100%;
-
     max-width: 1200px;
-
     margin: 0 auto;
-
-    line-height: 0;
 }
-
-
-/* =========================================================
-   IMAGEN
-========================================================= */
 
 .pieza {
-
     display: block;
-
     width: 100%;
-
     height: auto;
-
-    margin: 0;
-
-    padding: 0;
 }
 
 
-/* =========================================================
+/* =====================================================
    REPRODUCTOR
-========================================================= */
+===================================================== */
 
 .audio-overlay {
-
     position: absolute;
 
     /*
-       IMPORTANTE:
+      EL REPRODUCTOR QUEDA EN LA PARTE INFERIOR
+      DE LA IMAGEN.
 
-       El reproductor está colocado desde ABAJO
-       para que no tape la frase superior.
+      bottom: 0%
+      = pegado al borde inferior.
 
-       Si necesitas moverlo:
-
-       bottom: 10%  -> más abajo
-
-       bottom: 14%  -> más arriba
+      NO utilizamos top.
     */
 
-    left: 10%;
+    left: 8%;
+    width: 84%;
 
-    right: 10%;
-
-    bottom: 10%;
+    bottom: 0%;
 
     height: 12%;
 
-    min-height: 90px;
+    min-height: 85px;
 
     display: flex;
-
     align-items: center;
 
     padding: 10px 18px;
 
     background: rgba(255,255,255,0.96);
 
-    border-radius: 25px;
+    border-radius: 24px 24px 0 0;
 
     box-shadow:
-
-        0 7px 20px
-        rgba(0,0,0,0.14);
+        0 -5px 18px rgba(0,0,0,0.12);
 
     z-index: 20;
 }
 
 
-/* =========================================================
+/* =====================================================
    BOTÓN PLAY
-========================================================= */
+===================================================== */
 
 .play-btn {
-
-    position: relative;
-
     width: 72px;
-
     height: 72px;
-
     min-width: 72px;
 
     border: none;
-
     border-radius: 50%;
 
     background: #5b951e;
 
-    color: white;
-
-    cursor: pointer;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
+    color: #ffffff;
 
     font-size: 30px;
-
     line-height: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     padding: 0;
 
+    cursor: pointer;
+
     box-shadow:
-
         0 6px 0 #3f6f16,
-
-        0 10px 18px
-        rgba(0,0,0,0.22);
+        0 10px 18px rgba(0,0,0,0.22);
 
     transition:
-
         transform 0.15s ease,
-
         box-shadow 0.15s ease;
 }
 
 
-/* =========================================================
-   EFECTO HOVER
-========================================================= */
+/* Hover */
 
 .play-btn:hover {
-
-    transform:
-        translateY(-3px);
+    transform: translateY(-3px);
 
     box-shadow:
-
         0 9px 0 #3f6f16,
-
-        0 14px 22px
-        rgba(0,0,0,0.25);
+        0 14px 22px rgba(0,0,0,0.25);
 }
 
 
-/* =========================================================
-   EFECTO AL PRESIONAR
-========================================================= */
+/* Presionar */
 
 .play-btn:active {
-
-    transform:
-        translateY(4px);
+    transform: translateY(4px);
 
     box-shadow:
-
         0 2px 0 #3f6f16,
-
-        0 5px 10px
-        rgba(0,0,0,0.18);
+        0 5px 10px rgba(0,0,0,0.18);
 }
 
 
-/* =========================================================
-   EFECTO MIENTRAS REPRODUCE
-========================================================= */
+/* =====================================================
+   ANIMACIÓN MIENTRAS REPRODUCE
+===================================================== */
 
 .play-btn.playing {
-
-    animation:
-        audioPulse 1.6s
-        infinite ease-in-out;
+    animation: pulseAudio 1.6s infinite ease-in-out;
 }
 
-
-@keyframes audioPulse {
+@keyframes pulseAudio {
 
     0% {
-
         box-shadow:
-
             0 6px 0 #3f6f16,
-
-            0 0 0 0
-            rgba(91,149,30,0.50);
-
+            0 0 0 0 rgba(91,149,30,0.45);
     }
 
     50% {
-
         box-shadow:
-
             0 6px 0 #3f6f16,
-
-            0 0 0 14px
-            rgba(91,149,30,0.10);
-
+            0 0 0 15px rgba(91,149,30,0.10);
     }
 
     100% {
-
         box-shadow:
-
             0 6px 0 #3f6f16,
-
-            0 0 0 0
-            rgba(91,149,30,0);
-
+            0 0 0 0 rgba(91,149,30,0);
     }
 }
 
 
-/* =========================================================
-   CONTENEDOR INFORMACIÓN
-========================================================= */
+/* =====================================================
+   INFORMACIÓN DEL AUDIO
+===================================================== */
 
 .audio-info {
-
     flex: 1;
-
     min-width: 0;
 
     margin-left: 20px;
@@ -280,22 +187,11 @@ body {
 }
 
 
-/* =========================================================
-   TITULO
-========================================================= */
-
-.audio-title {
-
-    display: none;
-}
-
-
-/* =========================================================
+/* =====================================================
    TIEMPO
-========================================================= */
+===================================================== */
 
 .audio-time {
-
     font-size: 14px;
 
     color: #444444;
@@ -306,12 +202,11 @@ body {
 }
 
 
-/* =========================================================
+/* =====================================================
    BARRA
-========================================================= */
+===================================================== */
 
 .progress-container {
-
     position: relative;
 
     width: 100%;
@@ -328,16 +223,12 @@ body {
 }
 
 
-/* =========================================================
-   BARRA VERDE
-========================================================= */
+/* Barra verde */
 
 .progress-bar {
-
     position: absolute;
 
     left: 0;
-
     top: 0;
 
     width: 0%;
@@ -353,20 +244,15 @@ body {
 }
 
 
-/* =========================================================
-   PUNTO DE AVANCE
-========================================================= */
+/* Punto */
 
 .progress-knob {
-
     position: absolute;
 
     left: 0%;
-
     top: 50%;
 
     width: 18px;
-
     height: 18px;
 
     border-radius: 50%;
@@ -374,26 +260,21 @@ body {
     background: #5b951e;
 
     transform:
-        translate(-50%,-50%);
+        translate(-50%, -50%);
 
     box-shadow:
-
-        0 3px 6px
-        rgba(0,0,0,0.25),
-
-        inset 0 1px 2px
-        rgba(255,255,255,0.75);
+        0 3px 6px rgba(0,0,0,0.25),
+        inset 0 1px 2px rgba(255,255,255,0.75);
 
     pointer-events: none;
 }
 
 
-/* =========================================================
+/* =====================================================
    VOLUMEN
-========================================================= */
+===================================================== */
 
 .volume {
-
     margin-left: 18px;
 
     font-size: 22px;
@@ -404,46 +285,40 @@ body {
 }
 
 
-/* =========================================================
-   AUDIO REAL
-========================================================= */
+/* =====================================================
+   AUDIO
+===================================================== */
 
 #audio {
-
     display: none;
 }
 
 
-/* =========================================================
+/* =====================================================
    CELULAR
-========================================================= */
+===================================================== */
 
 @media (max-width: 700px) {
 
-
     .audio-overlay {
 
-        left: 7%;
+        left: 5%;
+        width: 90%;
 
-        right: 7%;
-
-        bottom: 8%;
+        bottom: 0%;
 
         height: 13%;
 
-        min-height: 72px;
+        min-height: 70px;
 
-        padding:
-            8px 10px;
+        padding: 8px 10px;
 
-        border-radius: 18px;
+        border-radius: 18px 18px 0 0;
     }
-
 
     .play-btn {
 
         width: 52px;
-
         height: 52px;
 
         min-width: 52px;
@@ -451,77 +326,56 @@ body {
         font-size: 22px;
 
         box-shadow:
-
             0 4px 0 #3f6f16,
-
-            0 7px 12px
-            rgba(0,0,0,0.20);
+            0 7px 12px rgba(0,0,0,0.20);
     }
 
-
     .audio-info {
-
         margin-left: 12px;
     }
 
-
     .audio-time {
-
         font-size: 11px;
-
         margin-bottom: 5px;
     }
 
-
     .progress-container {
-
         height: 7px;
     }
 
-
     .progress-knob {
-
         width: 13px;
-
         height: 13px;
     }
 
-
     .volume {
-
         font-size: 17px;
-
         margin-left: 8px;
     }
-
 }
 
 
-/* =========================================================
-   CELULAR PEQUEÑO
-========================================================= */
+/* =====================================================
+   CELULARES PEQUEÑOS
+===================================================== */
 
 @media (max-width: 420px) {
 
-
     .audio-overlay {
 
-        left: 5%;
+        left: 4%;
+        width: 92%;
 
-        right: 5%;
+        bottom: 0%;
 
-        bottom: 7%;
-
-        min-height: 64px;
+        min-height: 62px;
 
         padding: 6px 8px;
     }
 
-
     .play-btn {
 
         width: 46px;
-
         height: 46px;
 
         min-width: 46px;
@@ -529,30 +383,21 @@ body {
         font-size: 19px;
     }
 
-
     .audio-info {
-
         margin-left: 9px;
     }
 
-
     .audio-time {
-
         font-size: 10px;
     }
 
-
     .volume {
-
         font-size: 15px;
-
         margin-left: 5px;
     }
-
 }
 
 </style>
-
 </head>
 
 
@@ -564,9 +409,6 @@ body {
 ===================================================== -->
 
 <div class="pieza-container">
-
-
-    <!-- IMAGEN -->
 
     <img
         src="Final_mercados.png"
@@ -581,27 +423,17 @@ body {
 
     <div class="audio-overlay">
 
-
-        <!-- BOTÓN -->
-
         <button
             id="playBtn"
             class="play-btn"
             type="button"
             aria-label="Reproducir audio"
         >
-
             ▶
-
         </button>
 
 
-        <!-- INFORMACIÓN -->
-
         <div class="audio-info">
-
-
-            <!-- TIEMPO -->
 
             <div class="audio-time">
 
@@ -609,9 +441,7 @@ body {
                     00:00
                 </span>
 
-                <span>
-                    /
-                </span>
+                <span> / </span>
 
                 <span id="duration">
                     00:00
@@ -619,8 +449,6 @@ body {
 
             </div>
 
-
-            <!-- BARRA -->
 
             <div
                 id="progressContainer"
@@ -640,21 +468,14 @@ body {
 
             </div>
 
-
         </div>
 
-
-        <!-- VOLUMEN -->
 
         <div class="volume">
-
             🔊
-
         </div>
 
-
     </div>
-
 
 </div>
 
@@ -676,134 +497,76 @@ body {
 </audio>
 
 
-
 <script>
-
 
 /* =====================================================
    ELEMENTOS
 ===================================================== */
 
 const audio =
-    document.getElementById(
-        "audio"
-    );
-
+    document.getElementById("audio");
 
 const playBtn =
-    document.getElementById(
-        "playBtn"
-    );
-
+    document.getElementById("playBtn");
 
 const progressContainer =
-    document.getElementById(
-        "progressContainer"
-    );
-
+    document.getElementById("progressContainer");
 
 const progressBar =
-    document.getElementById(
-        "progressBar"
-    );
-
+    document.getElementById("progressBar");
 
 const progressKnob =
-    document.getElementById(
-        "progressKnob"
-    );
-
+    document.getElementById("progressKnob");
 
 const currentTime =
-    document.getElementById(
-        "currentTime"
-    );
-
+    document.getElementById("currentTime");
 
 const duration =
-    document.getElementById(
-        "duration"
-    );
-
+    document.getElementById("duration");
 
 
 /* =====================================================
-   FORMATO TIEMPO
+   FORMATO DEL TIEMPO
 ===================================================== */
 
-function formatTime(
-    seconds
-) {
-
+function formatTime(seconds) {
 
     if (
-        !isFinite(seconds)
-        ||
+        !isFinite(seconds) ||
         seconds < 0
     ) {
-
         return "00:00";
-
     }
 
-
     const minutes =
-        Math.floor(
-            seconds / 60
-        );
-
+        Math.floor(seconds / 60);
 
     const secs =
-        Math.floor(
-            seconds % 60
-        );
-
+        Math.floor(seconds % 60);
 
     return (
-
-        String(minutes)
-            .padStart(2,"0")
-
+        String(minutes).padStart(2, "0")
         +
-
         ":"
-
         +
-
-        String(secs)
-            .padStart(2,"0")
-
+        String(secs).padStart(2, "0")
     );
-
 }
 
 
-
 /* =====================================================
-   CARGAR DURACIÓN
+   DURACIÓN
 ===================================================== */
 
 audio.addEventListener(
     "loadedmetadata",
     function() {
 
-
-        if (
-            isFinite(
-                audio.duration
-            )
-        ) {
-
-            duration.textContent =
-                formatTime(
-                    audio.duration
-                );
-
-        }
+        duration.textContent =
+            formatTime(audio.duration);
 
     }
 );
-
 
 
 /* =====================================================
@@ -814,28 +577,11 @@ playBtn.addEventListener(
     "click",
     function() {
 
+        if (audio.paused) {
 
-        if (
-            audio.paused
-        ) {
+            audio.play();
 
-
-            audio.play()
-                .catch(
-                    function(error) {
-
-                        console.error(
-                            error
-                        );
-
-                    }
-                );
-
-
-        }
-
-        else {
-
+        } else {
 
             audio.pause();
 
@@ -845,127 +591,88 @@ playBtn.addEventListener(
 );
 
 
-
 /* =====================================================
-   CUANDO EMPIEZA
+   REPRODUCIENDO
 ===================================================== */
 
 audio.addEventListener(
     "play",
     function() {
 
+        playBtn.innerHTML = "❚❚";
 
-        playBtn.innerHTML =
-            "❚❚";
-
-
-        playBtn.classList.add(
-            "playing"
-        );
+        playBtn.classList.add("playing");
 
     }
 );
 
 
-
 /* =====================================================
-   CUANDO PAUSA
+   PAUSADO
 ===================================================== */
 
 audio.addEventListener(
     "pause",
     function() {
 
+        playBtn.innerHTML = "▶";
 
-        playBtn.innerHTML =
-            "▶";
-
-
-        playBtn.classList.remove(
-            "playing"
-        );
+        playBtn.classList.remove("playing");
 
     }
 );
 
 
-
 /* =====================================================
-   ACTUALIZAR PROGRESO
+   ACTUALIZAR BARRA Y TIEMPO
 ===================================================== */
 
 audio.addEventListener(
     "timeupdate",
     function() {
 
-
         if (
-            !isFinite(
-                audio.duration
-            )
-            ||
+            !isFinite(audio.duration) ||
             audio.duration <= 0
         ) {
-
             return;
-
         }
 
-
         const percentage =
-
             (
-                audio.currentTime
-                /
+                audio.currentTime /
                 audio.duration
-            )
-            *
-            100;
+            ) * 100;
 
-
-        /* BARRA */
 
         progressBar.style.width =
             percentage + "%";
 
 
-        /* PUNTO */
-
         progressKnob.style.left =
             percentage + "%";
 
 
-        /* TIEMPO */
-
         currentTime.textContent =
-            formatTime(
-                audio.currentTime
-            );
+            formatTime(audio.currentTime);
 
     }
 );
 
 
-
 /* =====================================================
-   CLICK EN BARRA
+   CLIC EN LA BARRA
 ===================================================== */
 
 progressContainer.addEventListener(
     "click",
     function(event) {
 
-
         if (
-            !isFinite(
-                audio.duration
-            )
+            !isFinite(audio.duration)
         ) {
-
             return;
-
         }
-
 
         const rect =
             progressContainer
@@ -973,14 +680,12 @@ progressContainer.addEventListener(
 
 
         const position =
-            event.clientX
-            -
+            event.clientX -
             rect.left;
 
 
         let percentage =
-            position
-            /
+            position /
             rect.width;
 
 
@@ -995,112 +700,33 @@ progressContainer.addEventListener(
 
 
         audio.currentTime =
-            percentage
-            *
+            percentage *
             audio.duration;
 
     }
 );
 
 
-
 /* =====================================================
-   TOQUE EN CELULAR
-===================================================== */
-
-progressContainer.addEventListener(
-    "touchstart",
-    function(event) {
-
-
-        if (
-            !isFinite(
-                audio.duration
-            )
-        ) {
-
-            return;
-
-        }
-
-
-        const touch =
-            event.touches[0];
-
-
-        const rect =
-            progressContainer
-                .getBoundingClientRect();
-
-
-        const position =
-            touch.clientX
-            -
-            rect.left;
-
-
-        let percentage =
-            position
-            /
-            rect.width;
-
-
-        percentage =
-            Math.max(
-                0,
-                Math.min(
-                    1,
-                    percentage
-                )
-            );
-
-
-        audio.currentTime =
-            percentage
-            *
-            audio.duration;
-
-
-    },
-    {
-        passive: true
-    }
-);
-
-
-
-/* =====================================================
-   CUANDO TERMINA
+   FINAL DEL AUDIO
 ===================================================== */
 
 audio.addEventListener(
     "ended",
     function() {
 
+        playBtn.innerHTML = "▶";
 
-        playBtn.innerHTML =
-            "▶";
+        playBtn.classList.remove("playing");
 
+        progressBar.style.width = "0%";
 
-        playBtn.classList.remove(
-            "playing"
-        );
+        progressKnob.style.left = "0%";
 
-
-        progressBar.style.width =
-            "0%";
-
-
-        progressKnob.style.left =
-            "0%";
-
-
-        currentTime.textContent =
-            "00:00";
+        currentTime.textContent = "00:00";
 
     }
 );
-
 
 
 /* =====================================================
@@ -1111,28 +737,19 @@ audio.addEventListener(
     "durationchange",
     function() {
 
-
         if (
-            isFinite(
-                audio.duration
-            )
+            isFinite(audio.duration)
         ) {
 
-
             duration.textContent =
-                formatTime(
-                    audio.duration
-                );
+                formatTime(audio.duration);
 
         }
 
     }
 );
 
-
 </script>
 
-
 </body>
-
 </html>
