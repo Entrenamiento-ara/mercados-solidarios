@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-970EY6Y5JG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-970EY6Y5JG');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercados Solidarios</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#fff}
+body{font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
+
+.page{
+  position:relative;
+  width:100%;
+  max-width:1024px;
+  margin:0 auto;
+  line-height:0;
+}
+
+.pieza{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+/* Zona exacta del reproductor dibujado en la pieza:
+   x≈103, y≈979, w≈813, h≈109 sobre una imagen 1024x1536 */
+.audio-player{
+  position:absolute;
+  left:10.06%;
+  top:63.74%;
+  width:79.39%;
+  height:7.10%;
+  z-index:20;
+
+  display:flex;
+  align-items:center;
+
+  background:#fff;
+  border:1px solid #e7e7e7;
+  border-radius:1.4vw;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+
+  padding:0.8% 1.6%;
+  line-height:1.15;
+}
+
+/* PLAY */
+.play-btn{
+  flex:0 0 auto;
+  width:10.5%;
+  aspect-ratio:1/1;
+  border:0;
+  border-radius:50%;
+  background:linear-gradient(#5f9d24,#477d18);
+  color:#fff;
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:clamp(16px,3.1vw,38px);
+  padding:0;
+
+  box-shadow:
+    0 5px 0 #315c10,
+    0 9px 16px rgba(0,0,0,.22),
+    inset 0 2px 3px rgba(255,255,255,.28);
+
+  transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+}
+
+.play-btn:hover{
+  transform:translateY(-2px) scale(1.03);
+  filter:brightness(1.04);
+  box-shadow:
+    0 7px 0 #315c10,
+    0 12px 19px rgba(0,0,0,.24),
+    inset 0 2px 4px rgba(255,255,255,.32);
+}
+
+.play-btn:active{
+  transform:translateY(3px) scale(.97);
+  box-shadow:
+    0 2px 0 #315c10,
+    0 4px 8px rgba(0,0,0,.18),
+    inset 0 3px 5px rgba(0,0,0,.10);
+}
+
+.play-btn.playing{
+  animation:pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse{
+  0%{
+    box-shadow:
+      0 5px 0 #315c10,
+      0 0 0 0 rgba(91,149,30,.45),
+      0 9px 16px rgba(0,0,0,.22);
+  }
+  50%{
+    box-shadow:
+      0 5px 0 #315c10,
+      0 0 0 12px rgba(91,149,30,.08),
+      0 11px 18px rgba(0,0,0,.24);
+  }
+  100%{
+    box-shadow:
+      0 5px 0 #315c10,
+      0 0 0 0 rgba(91,149,30,0),
+      0 9px 16px rgba(0,0,0,.22);
+  }
+}
+
+/* BLOQUE CENTRAL */
+.audio-center{
+  flex:1;
+  min-width:0;
+  margin-left:3.3%;
+  margin-right:3.1%;
+  align-self:center;
+}
+
+.audio-title{
+  font-weight:700;
+  color:#202439;
+  font-size:clamp(10px,1.55vw,20px);
+  margin-bottom:1.0%;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.audio-time{
+  color:#263042;
+  font-size:clamp(9px,1.35vw,17px);
+  margin-bottom:1.7%;
+}
+
+.progress-wrap{
+  position:relative;
+  width:100%;
+  height:clamp(5px,.72vw,9px);
+  background:#d8d8d8;
+  border-radius:999px;
+  cursor:pointer;
+  touch-action:none;
+}
+
+.progress-fill{
+  position:absolute;
+  left:0;
+  top:0;
+  width:0%;
+  height:100%;
+  border-radius:999px;
+  background:#5b951e;
+}
+
+.progress-knob{
+  position:absolute;
+  left:0%;
+  top:50%;
+  width:clamp(9px,1.15vw,15px);
+  height:clamp(9px,1.15vw,15px);
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:#5b951e;
+  box-shadow:0 2px 4px rgba(0,0,0,.2);
+  pointer-events:none;
+}
+
+/* VOLUMEN */
+.volume-btn{
+  flex:0 0 auto;
+  width:6.5%;
+  aspect-ratio:1/1;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  color:#4b5164;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:clamp(14px,2.4vw,30px);
+  padding:0;
+}
+
+/* MENU VISUAL */
+.menu-dots{
+  flex:0 0 auto;
+  width:2.6%;
+  color:#4b5164;
+  font-size:clamp(13px,2.1vw,26px);
+  text-align:center;
+  line-height:1;
+  user-select:none;
+}
+
+#audio{display:none}
+
+@media(max-width:480px){
+  .audio-player{
+    border-radius:10px;
+    padding:1% 1.4%;
+  }
+  .audio-center{
+    margin-left:2.7%;
+    margin-right:2.2%;
+  }
+  .audio-title{
+    font-size:9px;
+  }
+  .audio-time{
+    font-size:8px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <img src="Final_mercados.png" alt="Mercados Solidarios" class="pieza">
+
+  <div class="audio-player" id="player">
+    <button class="play-btn" id="playBtn" type="button" aria-label="Reproducir audio">▶</button>
+
+    <div class="audio-center">
+      <div class="audio-title">Mensaje Mercados Solidarios</div>
+
+      <div class="audio-time">
+        <span id="currentTime">00:00</span>
+        <span> / </span>
+        <span id="duration">02:24</span>
+      </div>
+
+      <div class="progress-wrap" id="progressWrap" aria-label="Progreso del audio">
+        <div class="progress-fill" id="progressFill"></div>
+        <div class="progress-knob" id="progressKnob"></div>
+      </div>
+    </div>
+
+    <button class="volume-btn" id="volumeBtn" type="button" aria-label="Silenciar o activar sonido">🔊</button>
+    <div class="menu-dots">⋮</div>
+  </div>
+</div>
+
+<audio id="audio" preload="metadata">
+  <source src="Mercados_Solidarios.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("playBtn");
+const volumeBtn = document.getElementById("volumeBtn");
+const progressWrap = document.getElementById("progressWrap");
+const progressFill = document.getElementById("progressFill");
+const progressKnob = document.getElementById("progressKnob");
+const currentTime = document.getElementById("currentTime");
+const duration = document.getElementById("duration");
+
+
+const analyticsState = {
+  playSent: false,
+  p25: false,
+  p50: false,
+  p75: false,
+  complete: false
+};
+
+function sendAnalyticsEvent(name, params = {}){
+  if(typeof gtag === "function"){
+    gtag("event", name, {
+      ...params,
+      audio_name: "Mercados Solidarios",
+      page_section: "campaña solidaridad"
+    });
+  }
+}
+
+
+function fmt(seconds){
+  if(!Number.isFinite(seconds) || seconds < 0) return "00:00";
+  seconds = Math.floor(seconds);
+  const m = Math.floor(seconds/60);
+  const s = seconds%60;
+  return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+
+function updateDuration(){
+  if(Number.isFinite(audio.duration) && audio.duration > 0){
+    duration.textContent = fmt(audio.duration);
+  }
+}
+
+function updateProgress(){
+  if(!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+  const pct = Math.max(0,Math.min(100,(audio.currentTime/audio.duration)*100));
+  progressFill.style.width = pct + "%";
+  progressKnob.style.left = pct + "%";
+  currentTime.textContent = fmt(audio.currentTime);
+}
+
+playBtn.addEventListener("click", async ()=>{
+  try{
+    if(audio.paused){
+      await audio.play();
+
+      if(!analyticsState.playSent){
+        analyticsState.playSent = true;
+        sendAnalyticsEvent("audio_play", {
+          audio_duration_seconds: Number.isFinite(audio.duration) ? Math.round(audio.duration) : 53
+        });
+      }
+    }
+    else audio.pause();
+  }catch(e){
+    console.error("No se pudo reproducir el audio:", e);
+  }
+});
+
+audio.addEventListener("play", ()=>{
+  playBtn.textContent = "❚❚";
+  playBtn.classList.add("playing");
+});
+
+audio.addEventListener("pause", ()=>{
+  playBtn.textContent = "▶";
+  playBtn.classList.remove("playing");
+});
+
+audio.addEventListener("loadedmetadata", updateDuration);
+audio.addEventListener("durationchange", updateDuration);
+audio.addEventListener("timeupdate", ()=>{
+  updateProgress();
+
+  if(!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+
+  const ratio = audio.currentTime / audio.duration;
+
+  if(ratio >= 0.25 && !analyticsState.p25){
+    analyticsState.p25 = true;
+    sendAnalyticsEvent("audio_25", {
+      progress_percent: 25,
+      audio_current_seconds: Math.round(audio.currentTime)
+    });
+  }
+
+  if(ratio >= 0.50 && !analyticsState.p50){
+    analyticsState.p50 = true;
+    sendAnalyticsEvent("audio_50", {
+      progress_percent: 50,
+      audio_current_seconds: Math.round(audio.currentTime)
+    });
+  }
+
+  if(ratio >= 0.75 && !analyticsState.p75){
+    analyticsState.p75 = true;
+    sendAnalyticsEvent("audio_75", {
+      progress_percent: 75,
+      audio_current_seconds: Math.round(audio.currentTime)
+    });
+  }
+});
+
+audio.addEventListener("ended", ()=>{
+
+  if(!analyticsState.complete){
+    analyticsState.complete = true;
+    sendAnalyticsEvent("audio_complete", {
+      progress_percent: 100,
+      audio_duration_seconds: Number.isFinite(audio.duration) ? Math.round(audio.duration) : 53
+    });
+  }
+
+  playBtn.textContent = "▶";
+  playBtn.classList.remove("playing");
+  audio.currentTime = 0;
+  progressFill.style.width = "0%";
+  progressKnob.style.left = "0%";
+  currentTime.textContent = "00:00";
+});
+
+function seekFromClientX(clientX){
+  if(!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+  const rect = progressWrap.getBoundingClientRect();
+  const ratio = Math.max(0,Math.min(1,(clientX-rect.left)/rect.width));
+  audio.currentTime = ratio * audio.duration;
+  updateProgress();
+}
+
+progressWrap.addEventListener("click", e=>seekFromClientX(e.clientX));
+
+progressWrap.addEventListener("pointerdown", e=>{
+  seekFromClientX(e.clientX);
+});
+
+volumeBtn.addEventListener("click", ()=>{
+  audio.muted = !audio.muted;
+  volumeBtn.textContent = audio.muted ? "🔇" : "🔊";
+});
+
+audio.addEventListener("error", ()=>{
+  console.error("No se pudo cargar Mercados_Solidarios.mp3");
+});
+</script>
+
+</body>
+</html>
