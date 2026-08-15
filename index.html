@@ -35,7 +35,7 @@ body {
 
 
 /* =====================================================
-   CONTENEDOR DE LA IMAGEN
+   CONTENEDOR DE LA PIEZA
 ===================================================== */
 
 .pieza-container {
@@ -49,6 +49,7 @@ body {
     margin: 0 auto;
 
     line-height: 0;
+
 }
 
 
@@ -67,28 +68,30 @@ body {
     margin: 0;
 
     padding: 0;
+
 }
 
 
 /* =====================================================
-   POSICIÓN DEL AUDIO
+   POSICIÓN DEL REPRODUCTOR
 ===================================================== */
 
 /*
-   ESTE ES EL ÚNICO VALOR QUE VAMOS A AJUSTAR
-   SI NECESITAMOS MOVER EL REPRODUCTOR.
+   REFERENCIA:
+   "Mensaje Mercados Solidarios"
 
-   Ahora lo dejamos en 74%.
+   Esta posición se mantiene proporcional
+   tanto en computador como en celular.
 
-   73% = ligeramente arriba
-   74% = posición actual
-   75% = ligeramente abajo
-   76% = más abajo
+   76% = posición actual de referencia.
+
+   Si posteriormente necesitamos un pequeño ajuste,
+   solamente modificaremos este número.
 */
 
 :root {
 
-    --audio-top: 74%;
+    --audio-top: 76%;
 
 }
 
@@ -102,9 +105,7 @@ body {
     position: absolute;
 
     /*
-       Se posiciona DENTRO de la imagen.
-       Por eso mantiene su ubicación
-       cuando la imagen cambia de tamaño.
+       ANCLADO A LA IMAGEN
     */
 
     top: var(--audio-top);
@@ -113,8 +114,9 @@ body {
 
     width: 80%;
 
+
     /*
-       MUCHO MÁS DELGADO
+       ALTURA DEL REPRODUCTOR
     */
 
     height: 6%;
@@ -130,15 +132,14 @@ body {
 
 
     /*
-       BLANCO COMPLETAMENTE SÓLIDO
+       FONDO BLANCO SÓLIDO
+       NO TRANSPARENTE
     */
 
     background: #ffffff;
 
 
-    padding:
-
-        6px 14px;
+    padding: 6px 14px;
 
 
     border-radius: 18px;
@@ -151,13 +152,6 @@ body {
 
 
     z-index: 50;
-
-
-    /*
-       IMPORTANTE:
-       el reproductor no cambia su proporción
-       cuando cambia el tamaño de pantalla.
-    */
 
 }
 
@@ -176,19 +170,24 @@ body {
 
     min-width: 58px;
 
+
     border: none;
 
     border-radius: 50%;
+
 
     background: #5b951e;
 
     color: #ffffff;
 
+
     font-size: 25px;
 
     line-height: 1;
 
+
     padding: 0;
+
 
     cursor: pointer;
 
@@ -225,7 +224,7 @@ body {
 
 
 /* =====================================================
-   EFECTO AL PASAR EL MOUSE
+   EFECTO HOVER
 ===================================================== */
 
 .play-btn:hover {
@@ -275,7 +274,7 @@ body {
 
 
 /* =====================================================
-   EFECTO MIENTRAS SE REPRODUCE
+   PULSO MIENTRAS SE REPRODUCE
 ===================================================== */
 
 .play-btn.playing {
@@ -349,7 +348,7 @@ body {
 
 
 /* =====================================================
-   INFORMACIÓN
+   INFORMACIÓN DEL AUDIO
 ===================================================== */
 
 .audio-info {
@@ -458,7 +457,6 @@ body {
     background: #5b951e;
 
     transform:
-
         translate(-50%, -50%);
 
 
@@ -477,7 +475,7 @@ body {
 
 
 /* =====================================================
-   VOLUMEN
+   ICONO DE VOLUMEN
 ===================================================== */
 
 .volume {
@@ -494,7 +492,7 @@ body {
 
 
 /* =====================================================
-   AUDIO REAL
+   AUDIO
 ===================================================== */
 
 #audio {
@@ -511,11 +509,11 @@ body {
 /*
    IMPORTANTE:
 
-   NO cambiamos top.
+   NO cambiamos la posición vertical.
 
-   El reproductor sigue exactamente
-   la misma posición proporcional
-   respecto a la imagen.
+   Se conserva el mismo --audio-top,
+   porque el reproductor está dentro
+   del contenedor de la imagen.
 */
 
 @media (max-width: 700px) {
@@ -526,10 +524,6 @@ body {
         left: 7%;
 
         width: 86%;
-
-        /*
-           MISMA POSICIÓN PROPORCIONAL
-        */
 
         top: var(--audio-top);
 
@@ -619,7 +613,7 @@ body {
 
 
 /* =====================================================
-   CELULAR MUY PEQUEÑO
+   CELULAR PEQUEÑO
 ===================================================== */
 
 @media (max-width: 420px) {
@@ -633,9 +627,11 @@ body {
 
         top: var(--audio-top);
 
+
         height: 6%;
 
         min-height: 43px;
+
 
         padding:
 
@@ -708,13 +704,11 @@ body {
 
 
 <!-- =====================================================
-     PIEZA COMPLETA
+     PIEZA
 ===================================================== -->
 
 <div class="pieza-container">
 
-
-    <!-- IMAGEN -->
 
     <img
         src="Final_mercados.png"
@@ -724,13 +718,13 @@ body {
 
 
     <!-- =================================================
-         REPRODUCTOR ANCLADO A LA IMAGEN
+         REPRODUCTOR
     ================================================= -->
 
     <div class="audio-overlay">
 
 
-        <!-- BOTÓN -->
+        <!-- BOTÓN PLAY -->
 
         <button
             id="playBtn"
@@ -795,9 +789,7 @@ body {
         <!-- VOLUMEN -->
 
         <div class="volume">
-
             🔊
-
         </div>
 
 
@@ -807,7 +799,7 @@ body {
 
 
 <!-- =====================================================
-     AUDIO
+     AUDIO REAL
 ===================================================== -->
 
 <audio
@@ -824,6 +816,7 @@ body {
 
 
 <script>
+
 
 /* =====================================================
    ELEMENTOS
@@ -872,11 +865,10 @@ const duration =
 
 
 /* =====================================================
-   FORMATO DE TIEMPO
+   FORMATO DEL TIEMPO
 ===================================================== */
 
 function formatTime(seconds) {
-
 
     if (
         !isFinite(seconds) ||
@@ -929,7 +921,6 @@ audio.addEventListener(
     "loadedmetadata",
     function() {
 
-
         if (
             isFinite(
                 audio.duration
@@ -956,11 +947,9 @@ playBtn.addEventListener(
     "click",
     function() {
 
-
         if (
             audio.paused
         ) {
-
 
             audio.play()
                 .catch(
@@ -974,9 +963,7 @@ playBtn.addEventListener(
                     }
                 );
 
-
         } else {
-
 
             audio.pause();
 
@@ -987,17 +974,15 @@ playBtn.addEventListener(
 
 
 /* =====================================================
-   AUDIO COMENZÓ
+   REPRODUCIENDO
 ===================================================== */
 
 audio.addEventListener(
     "play",
     function() {
 
-
         playBtn.innerHTML =
             "❚❚";
-
 
         playBtn.classList.add(
             "playing"
@@ -1008,17 +993,15 @@ audio.addEventListener(
 
 
 /* =====================================================
-   AUDIO PAUSADO
+   PAUSADO
 ===================================================== */
 
 audio.addEventListener(
     "pause",
     function() {
 
-
         playBtn.innerHTML =
             "▶";
-
 
         playBtn.classList.remove(
             "playing"
@@ -1029,13 +1012,12 @@ audio.addEventListener(
 
 
 /* =====================================================
-   ACTUALIZAR TIEMPO Y BARRA
+   ACTUALIZAR BARRA Y TIEMPO
 ===================================================== */
 
 audio.addEventListener(
     "timeupdate",
     function() {
-
 
         if (
             !isFinite(
@@ -1057,21 +1039,15 @@ audio.addEventListener(
             ) * 100;
 
 
-        /* Barra */
-
         progressBar.style.width =
 
             percentage + "%";
 
 
-        /* Punto */
-
         progressKnob.style.left =
 
             percentage + "%";
 
-
-        /* Tiempo */
 
         currentTime.textContent =
 
@@ -1084,13 +1060,12 @@ audio.addEventListener(
 
 
 /* =====================================================
-   CLICK SOBRE LA BARRA
+   CLIC EN LA BARRA
 ===================================================== */
 
 progressContainer.addEventListener(
     "click",
     function(event) {
-
 
         if (
             !isFinite(
@@ -1142,13 +1117,12 @@ progressContainer.addEventListener(
 
 
 /* =====================================================
-   SOPORTE PARA CELULAR
+   SOPORTE PARA TOQUE EN CELULAR
 ===================================================== */
 
 progressContainer.addEventListener(
     "touchstart",
     function(event) {
-
 
         if (
             !isFinite(
@@ -1162,7 +1136,6 @@ progressContainer.addEventListener(
 
 
         const touch =
-
             event.touches[0];
 
 
@@ -1208,30 +1181,25 @@ progressContainer.addEventListener(
 
 
 /* =====================================================
-   AUDIO TERMINÓ
+   CUANDO TERMINA EL AUDIO
 ===================================================== */
 
 audio.addEventListener(
     "ended",
     function() {
 
-
         playBtn.innerHTML =
             "▶";
-
 
         playBtn.classList.remove(
             "playing"
         );
 
-
         progressBar.style.width =
             "0%";
 
-
         progressKnob.style.left =
             "0%";
-
 
         currentTime.textContent =
             "00:00";
@@ -1248,13 +1216,11 @@ audio.addEventListener(
     "durationchange",
     function() {
 
-
         if (
             isFinite(
                 audio.duration
             )
         ) {
-
 
             duration.textContent =
 
